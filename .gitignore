@@ -1,0 +1,7 @@
+*venv/
+.idea/
+local/
+dist/
+build/
+DCSO_TIE*
+MANIFEST

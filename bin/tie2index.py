@@ -1,106 +1,133 @@
-# Copyright (c) 2017, 2019, DCSO GmbH
+# Copyright (c) 2017, 2020, DCSO GmbH
 
-import urllib2
+from typing import Optional, NoReturn
 import json
 import datetime
 import csv
-import re
 import sys
 import os
-from cStringIO import StringIO
-from sets import Set
-from splunk.clilib import cli_common as cli
+
+# we change the path so that this app can run within the Splunk environment
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lib"))
+
+from dcsotie.errors import TIEError
+from dcsotie.fetchers import IoCFetcher
+from dcsotiesplunk.config import normalize_configuration, default_configuration
+from dcsotiesplunk.logger import get_logger
+
+logger = get_logger().getChild('tie2index')
+
+FIRST_RUN_TIMEDELTA = datetime.timedelta(days=30)
+TIMEOUT = (3, 120)  # (connection timeout, read timeout) in seconds (can be float)
+SETUP = default_configuration()
+
+try:
+    # this will only work when application is run within Splunk
+    from splunk.clilib import cli_common as cli
+
+    tie_args = cli.getConfStanza('dcso_tie_setup', 'tie')
+    filter_args = cli.getConfStanza('dcso_tie_setup', 'filter')
+    proxy_args = cli.getConfStanza('dcso_tie_setup', 'proxy')
+
+    for k, v in tie_args.items():
+        SETUP['tie'][k] = v
+
+    for k, v in filter_args.items():
+        SETUP['filter'][k] = v
+
+    for k, v in proxy_args.items():
+        SETUP['proxy'][k] = v
+
+    SETUP = normalize_configuration(SETUP)
+
+except ImportError:
+    # this will be used when not within Splunk (for example, for testing, developing, ..)
+    from dcsotiesplunk.config import read_conf_from_file
+
+    SETUP = read_conf_from_file()
+    try:
+        os.mkdir(os.path.join(os.path.dirname(__file__), "..", "local"))
+    except FileExistsError:
+        # we make sure it exists
+        pass
+    except Exception as exc:
+        logger.error("failed creating local dir ({})".format(exc))
+        sys.exit(1)
 
 csv.field_size_limit(sys.maxsize)
-proxy_args = cli.getConfStanza('dcso_tie_setup','proxy')
 
-if str(proxy_args['host']):
-    proxy_link = "https://{}:{}@{}:{}".format(str(proxy_args['user']),str(proxy_args['password']),str(proxy_args['host']),str(proxy_args['port']))
-    proxy = urllib2.ProxyHandler({'https': proxy_link})
-    auth = urllib2.HTTPBasicAuthHandler()
-    opener = urllib2.build_opener(proxy, auth, urllib2.HTTPHandler)
-    urllib2.install_opener(opener)
 
-#Check if there already is a seq.json otherwise create
-#if os.path.exists(os.path.join(os.path.dirname(__file__),'../local/seq.json')):
-#    with open(os.path.join(os.path.dirname(__file__),'../local/seq.json'), 'r') as seqinput:
-#        seqfile = json.load(seqinput)
-#else:
-#    data = {'tie':{'seq_number': 0}}
-#    with open(os.path.join(os.path.dirname(__file__),'../local/seq.json'), 'w') as outfile:
-#        json.dump(data,outfile)
+def get_proxies() -> Optional[dict]:
+    proxy_cfg = SETUP['proxy']
 
-def first_run():
-    period = (datetime.date.today() - datetime.timedelta(30)).strftime('%Y-%m-%dT%H:%M:%SZ')
-    request = urllib2.Request("{}?updated_at_since={}&order_by=seq&direction=asc".format(TIE_API,period))
-    request.add_header("X-Authorization", 'bearer {}'.format(TIE_TOKEN))
-    request.add_header("Accept", 'application/json')
-    contents = json.loads(urllib2.urlopen(request).read())
-    try:
-        if re.search("rel=next",urllib2.urlopen(request).info().getheader('Link')):
-            has_more = True
+    if not 'host' in proxy_cfg and not isinstance(str, proxy_cfg['host']):
+        return None
+
+    host = proxy_cfg['host'].strip()
+
+    return {
+        'https': 'https://{}:{}@{}:{}'.format(str(proxy_cfg['user']), str(proxy_cfg['password']),
+                                              host, str(proxy_cfg['port']))
+    }
+
+
+def fetch_iocs() -> NoReturn:
+    proxies = get_proxies()
+
+    fetcher = IoCFetcher(
+        token=SETUP['tie']['token'],
+        api_uri=SETUP['tie']['feed_api'],
+        proxies=proxies,
+        timeout=TIMEOUT)
+
+    fetcher.state_file = os.path.join(os.path.dirname(__file__), '../local/seq.json')
+
+    f = SETUP['filter']
+
+    updated_since = None
+    if fetcher.state['seq_number'] == 0:
+        # check if we had a starting sequence number configured, and use that instead
+        if SETUP['tie']['start_ioc_seq'] != 0:
+            logger.info("restart fetching IoCs at sequence number {}".format(SETUP['tie']['start_ioc_seq']))
+            fetcher.state['seq_number'] = SETUP['tie']['start_ioc_seq']
         else:
-            has_more = False
-    except Exception as e:
-        has_more = False
-        print e
-    return contents,has_more
+            updated_since = (datetime.date.today() - FIRST_RUN_TIMEDELTA).strftime('%Y-%m-%dT%H:%M:%SZ')
+            logger.info("initial fetching of IoC starting from {}".format(updated_since))
+    else:
+        logger.info("fetching IoCs using sequence number {}".format(fetcher.state['seq_number']))
 
-def query_tie(seq):
-    request = urllib2.Request("{}?seq={}-&order_by=seq&direction=asc&limit=1000".format(TIE_API,seq))
-    request.add_header("X-Authorization", 'bearer {}'.format(TIE_TOKEN))
-    request.add_header("Accept", 'application/json')
-    contents = json.loads(urllib2.urlopen(request).read())
-    try:
-        if re.search("rel=next",urllib2.urlopen(request).info().getheader('Link')):
-            has_more = True
-        else:
-            has_more = False
-    except:
-        has_more = False
-    return contents,has_more
+    i = 0
+    data = fetcher.fetch(updated_since=updated_since, limit=10)
+    while i < 50:
+        i += 1
+
+        iocs = data['iocs']
+        for ioc in iocs:
+            if (ioc['data_type'] == "IPv4" and int(ioc['max_confidence']) >= int(f['ip_confidence'])
+                and int(ioc['max_severity']) >= int(f['ip_severity'])) or (
+                    ioc['data_type'] == "URLVerbatim" and int(ioc['max_confidence']) >= int(
+                f['url_confidence']) and int(ioc['max_severity']) >= int(f['url_severity'])) or (
+                    ioc['data_type'] == "DomainName" and int(ioc['max_confidence']) >= int(
+                f['dom_confidence']) and int(ioc['max_severity']) >= int(f['dom_severity'])) or (
+                    int(ioc['max_confidence']) >= int(f['confidence']) and
+                    int(ioc['max_severity']) >= int(f['severity'])):
+                print(json.dumps(ioc), file=sys.stdout)
+
+        fetcher.store_state()
+        if not fetcher.have_next:
+            break
+
+        data = fetcher.next()
+
 
 if __name__ == "__main__":
-    #Check if there already is a seq.json otherwise create
-    if os.path.exists(os.path.join(os.path.dirname(__file__),'../local/seq.json')):
-        with open(os.path.join(os.path.dirname(__file__),'../local/seq.json'), 'r') as seqinput:
-            seqfile = json.load(seqinput)
-    else:
-        data = {'tie':{'seq_number': 0}}
-        with open(os.path.join(os.path.dirname(__file__),'../local/seq.json'), 'w') as outfile:
-            json.dump(data,outfile)
+    if 'TIE_TOKEN' in os.environ:
+        SETUP['tie']['token'] = os.environ['TIE_TOKEN']
 
-    tie_args = cli.getConfStanza('dcso_tie_setup','tie')
-    filter_args = cli.getConfStanza('dcso_tie_setup','filter')
-    proxy_args = cli.getConfStanza('dcso_tie_setup','proxy')
-
-    TIE_TOKEN = str(tie_args["token"])
-    TIE_API = str(tie_args["feed_api"])
-    
-    FILTER_IP_CONFIDENCE = str(filter_args['ip_confidence'])
-    FILTER_IP_SEVERITY = str(filter_args['ip_severity'])
-    FILTER_URL_CONFIDENCE = str(filter_args['url_confidence'])
-    FILTER_URL_SEVERITY = str(filter_args['url_severity'])
-    FILTER_DOM_CONFIDENCE = str(filter_args['dom_confidence'])
-    FILTER_DOM_SEVERITY = str(filter_args['dom_severity'])
-    FILTER_CONFIDENCE = str(filter_args['confidence'])
-    FILTER_SEVERITY = str(filter_args['severity'])
-    
-    i = 0
-    while True:
-        i += 1
-        if seqfile['tie']['seq_number'] == 0:
-            content,has_more = first_run()
-        else:
-            content,has_more = query_tie(seqfile['tie']['seq_number'])
-        iocs = content["iocs"]
-        for ioc in iocs:
-            if (ioc['data_type']=="IPv4" and int(ioc['max_confidence']) >= int(FILTER_IP_CONFIDENCE) and int(ioc['max_severity']) >= int(FILTER_IP_SEVERITY)) or (ioc['data_type']=="URLVerbatim" and int(ioc['max_confidence']) >= int(FILTER_URL_CONFIDENCE) and int(ioc['max_severity']) >= int(FILTER_URL_SEVERITY)) or (ioc['data_type']=="DomainName" and int(ioc['max_confidence']) >= int(FILTER_DOM_CONFIDENCE) and int(ioc['max_severity']) >= int(FILTER_DOM_SEVERITY)) or (int(ioc['max_confidence']) >= int(FILTER_CONFIDENCE) and int(ioc['max_severity']) >= int(FILTER_SEVERITY)):
-                print json.dumps(ioc)
-            if seqfile['tie']['seq_number'] < int(ioc['min_seq']):
-                seqfile['tie']['seq_number'] = int(ioc['min_seq'])+1
-                with open(os.path.join(os.path.dirname(__file__),'../local/seq.json'), 'w') as save:
-                    json.dump(seqfile, save)
-
-        if not has_more or i>50:
-            break
+    try:
+        fetch_iocs()
+    except KeyboardInterrupt:
+        # don't output anything so it is not considered an error
+        pass
+    except TIEError as exc:
+        logger.error(str(exc))

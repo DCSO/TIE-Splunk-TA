@@ -1,0 +1,9 @@
+recursive-include bin *.py
+recursive-include default *.conf *.xml
+recursive-include lib *.py
+recursive-include metadata *.meta
+recursive-include static *.png
+prune tests
+include LICENSE
+include requirements.txt
+include README.md

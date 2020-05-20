@@ -1,101 +1,118 @@
 <setup>
-  	<block title="Configuration of DCSO TA TIE">
-    		<text>Setup page for the app</text>
-  	</block>
+    <block title="Configuration of DCSO TIE Splunk AddOn" endpoint="tie/tiesetupendpoint" entity="tie">
+        <text>
+            &lt;strong&gt;API Token&lt;/strong&gt;: either a DCSO Portal Token or a (legacy) TIE Token &lt;br/&gt;&lt;br/&gt;
+            &lt;strong&gt;Initial IoC Sequence Number&lt;/strong&gt;: here you can specify at which sequence number to
+            start
+            fetching IoC. This is useful when you have an index filled, and you are re-installing the add-on new.
+            Leave zero (0) to start from NOW minus 30 days.&lt;br/&gt;&lt;br/&gt;
+        </text>
+        <input field="token">
+            <font color="red">
+                <b>*</b>
+            </font>
+            <label>API Token</label>
+            <type>text</type>
+            <text>
 
-  	<block title="General TIE Setup">
-		<text> This is the basic setup</text>
-		<input field="token" endpoint="tie/tiesetupendpoint" entity="tie">
-			<font color="red"><b>*</b></font>
-      			<label>Token:</label>
-      			<type>text</type>
-    		</input>
-	</block>
+            </text>
+        </input>
+        <input field="start_ioc_seq">
+            <label>Initial IoC Sequence Number</label>
+            <type>text</type>
+        </input>
+    </block>
 
-        <block title="Configure TIE Filter" endpoint="tie/tiefilterendpoint" entity="filter" >
-                <text> Configure your Filter</text>
-                <input field="ip_confidence">
-                        <label>Confidence for IP:</label>
-                        <type>text</type>
-                </input>
-		<input field="ip_severity">
-                        <label>Severity for IP:</label>
-                        <type>text</type>
-                </input>
-		<input field="dom_confidence">
-                        <label>Confidence for Domain:</label>
-                        <type>text</type>
-                </input>
-		<input field="dom_severity">
-                        <label>Severity for Domain:</label>
-                        <type>text</type>
-                </input>
-		<input field="url_confidence">
-                        <label>Confidence for URL:</label>
-                        <type>text</type>
-                </input>
-		<input field="url_severity">
-                        <label>Severity for URL:</label>
-                        <type>text</type>
-                </input>
-		<input field="email_confidence">
-                        <label>Confidence for Email:</label>
-                        <type>text</type>
-                </input>
-		<input field="email_severity">
-                        <label>Confidence for Email:</label>
-                        <type>text</type>
-                </input>
-		<input field="confidence">
-                        <label>Confidence for General:</label>
-                        <type>text</type>
-                </input>
-		<input field="severity">
-                        <label>Severity for General:</label>
-                        <type>text</type>
-                </input>
+    <block title="Configure DCSO TIE Filter" endpoint="tie/tiefilterendpoint" entity="filter">
+        <text>Here you can configure various filters for DCSO TIE IoCs.</text>
+        <input field="ip_confidence">
+            <label>Confidence for IP</label>
+            <type>text</type>
+        </input>
+        <input field="ip_severity">
+            <label>Severity for IP</label>
+            <type>text</type>
+        </input>
+        <input field="dom_confidence">
+            <label>Confidence for Domain</label>
+            <type>text</type>
+        </input>
+        <input field="dom_severity">
+            <label>Severity for Domain</label>
+            <type>text</type>
+        </input>
+        <input field="url_confidence">
+            <label>Confidence for URL</label>
+            <type>text</type>
+        </input>
+        <input field="url_severity">
+            <label>Severity for URL</label>
+            <type>text</type>
+        </input>
+        <input field="email_confidence">
+            <label>Confidence for Email</label>
+            <type>text</type>
+        </input>
+        <input field="email_severity">
+            <label>Confidence for Email</label>
+            <type>text</type>
+        </input>
+        <input field="confidence">
+            <label>Confidence for General</label>
+            <type>text</type>
+        </input>
+        <input field="severity">
+            <label>Severity for General</label>
+            <type>text</type>
+        </input>
 
-        </block>
+    </block>
 
 
-	<block title="Enable Scrips" endpoint="data/inputs/script" entity=".%2Fbin%2Ftie2index.py"> 
-		<text> Uncheck to enable </text>
-		<input  field="disabled">
-                        <label>tie2index.py</label>
-                        <type>bool</type>
-                </input>
-                <input  field="interval">
-                        <label>How often update (in seconds)</label>
-                        <type>text</type>
-                </input>
-		<text> 
-			&lt;i&gt;The Index must be known on the HF.&lt;/i&gt;
-		</text>
-                <input  field="index">
-                        <label>Into which index?</label>
-                        <type>text</type>
-                </input>
+    <block title="Enable Scripts" endpoint="data/inputs/script" entity=".%2Fbin%2Ftie2index.py">
+        <text>
+            The &lt;strong&gt;tie2index.py&lt;/strong&gt; script is responsible for fetching IoCs from DCSO TIE.
+            Specify here with which  interval, and into which index to store the events. When using non-default
+            index, the index must be available in the Indexer or Heavy Forwarder.&lt;br/&gt;
+            &lt;br/&gt;
+            &lt;strong&gt;Make sure to uncheck to enable.&lt;/strong&gt;&lt;br/&gt;
+            &lt;br/&gt;
+        </text>
+        <input field="disabled">
+            <label>tie2index.py (checked means disabled)</label>
+            <type>bool</type>
+        </input>
+        <input field="interval">
+            <label>Interval for [$name$]</label>
+            <type>text</type>
+        </input>
+        <input field="index">
+            <label>Index for IoCs</label>
+            <type>text</type>
+        </input>
 
-	</block>
+    </block>
 
-        <block title="Configure Proxy" endpoint="tie/tieproxyendpoint" entity="proxy">
-                <text> Leave clear if unused </text>
-                <input  field="host">
-                        <label>Host:</label>
-                        <type>text</type>
-                </input>
-                <input  field="port">
-                        <label>Port:</label>
-                        <type>text</type>
-                </input>
-                <input  field="user">
-                        <label>User:</label>
-                        <type>text</type>
-                </input>
-                <input  field="password">
-                        <label>Password:</label>
-                        <type>text</type>
-                </input>
-        </block>
+    <block title="Configure Proxy" endpoint="tie/tieproxyendpoint" entity="proxy">
+        <text>Here you define the HTTP proxy to use when connecting with DCSO TIE. Leave blank if no proxy is
+            required.
+        </text>
+        <input field="host">
+            <label>Host</label>
+            <type>text</type>
+        </input>
+        <input field="port">
+            <label>Port</label>
+            <type>text</type>
+        </input>
+        <input field="user">
+            <label>User</label>
+            <type>text</type>
+        </input>
+        <input field="password">
+            <label>Password</label>
+            <type>text</type>
+        </input>
+    </block>
 
 </setup>

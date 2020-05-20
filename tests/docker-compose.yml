@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  splunk:
+    container_name: TIEsplunk
+    image: splunk/splunk:latest
+    ports:
+      - "8000:8000"
+      - "8089:8089"
+    environment:
+      - SPLUNK_PASSWORD=chopchop
+      - SPLUNK_START_ARGS=--accept-license
+    volumes:
+      # OPTIMISTIC_ABOUT_FILE_LOCKING=1 on macOS must be set after the first failing run
+      # in /opt/splunk/etc/splunk-launch.conf
+      - ./splunkdata/etc:/opt/splunk/etc
+      - ./splunkdata/var:/opt/splunk/var
