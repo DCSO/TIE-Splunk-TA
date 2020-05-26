@@ -10,3 +10,7 @@ class TIEConnectionError(TIEError):
 
 class TIEAPIError(TIEError):
     pass
+
+
+class TIEConfigError(TIEError):
+    pass
