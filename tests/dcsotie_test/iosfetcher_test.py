@@ -7,6 +7,11 @@ import sys
 import tempfile
 import unittest
 
+try:
+    import dcsotie
+except ImportError:
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', "lib"))
+
 from dcsotie.fetchers import IoCFetcher
 from dcsotie.errors import TIEConnectionError
 from dcsotie import TIE_TOKEN
@@ -57,7 +62,7 @@ class TestIOCFetcher(unittest.TestCase):
         self.assertEqual((1, 39.9), f.timeout)
 
     def test_fetch_cnx_error(self):
-        f = IoCFetcher(api_uri='http://localhost.local:8080', token='mytoken', timeout=0.5)
+        f = IoCFetcher(api_uri='http://localhost.local:8080', token='mytoken', timeout=(1, 3))
         with self.assertRaises(TIEConnectionError) as ctx:
             f.fetch()
         self.assertTrue("failed connecting with TIEngine" in str(ctx.exception))
@@ -120,6 +125,4 @@ class TestIOCFetcher(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', "lib"))
-
     unittest.main()

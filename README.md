@@ -39,7 +39,9 @@ After installation, the add-on needs to be configured.
 
 ## Splunk App Setup Page
 
-After installation you must setup the app or add-on.
+Important: when after saving an error appears in the Splunk Web tool, the configuration is stored, but
+it does not give much information what went wrong.
+To find out the issue, you will have to look in the log file (see below).
 
 An API or Machine Token is required to access the Threat Intelligence Engine or TIE. Both the legacy
 token created through `tie.dcso.de` and the newer tokens created through `portal.dcso.de` are supported.
@@ -54,6 +56,7 @@ There are few more details about the configuration:
 * **tie2index.py** script: make sure to enable this by un-checking the checkbox.
 * **Index for IoCs**: the index used to store IoCs (events). When using a custom index, it
   must already exist.
+* **Severity & Confidence**: can be provided as number as well as range (or example `1-` or `30-90`).
 
 ## Standard Filter
 
@@ -78,6 +81,9 @@ The default ranges of the filters are mentioned in the section 'Standard Filter'
 
 This add-on will log errors, warnings, and other informative messages to a separate log file within
 the folder `${SPLUNK_HOME}/var/log/splunk`. The file is called `dcso_tie.log` and is rotated 6 times.
+
+The entries in this log file are stored, when executed by Splunk, as JSON. This makes it ready to be
+monitored by Splunk itself.
 
 # Contact
 
@@ -113,7 +119,7 @@ $ TIE_TOKEN=YOURTOKENHERE python tests/tests.py
 
 ## Deployment
 
-The add-on can be packages using the normal `distutils` command. However, for Splunk we need
+The add-on can be packaged using the normal `distutils` command. However, for Splunk we needed
 to adapt a bit so that it is easy to create, deploy and install.
 
 ## For Splunk
@@ -148,4 +154,3 @@ Archive:  dist/DCSO_TIE_Splunk_AddOn2-2.0.0b6.zip
 # License
 
 See LICENSE file included in the repository.
-

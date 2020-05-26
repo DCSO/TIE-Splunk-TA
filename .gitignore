@@ -1,7 +1,11 @@
 *venv/
 .idea/
+
 local/
 dist/
 build/
 DCSO_TIE*
 MANIFEST
+
+.DS_Store
+__pycache__

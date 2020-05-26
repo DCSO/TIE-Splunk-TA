@@ -3,8 +3,22 @@
 # This file is based on the skeleton Python script provided by Splunk.
 # It is adapted to be more conform to Python code styling.
 
+import os
+import sys
+
 import splunk.admin as admin
 # import splunk.entity as en
+
+try:
+    import dcsotie
+except ImportError:
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lib"))
+
+from dcsotiesplunk.config import normalize_splunk_setup_args
+from dcsotie.errors import TIEConfigError
+from dcsotiesplunk.logger import get_logger
+
+logger = get_logger().getChild("setup_handler")
 
 """
 Copyright (C) 2005 - 2010 Splunk Inc. All Rights Reserved.
@@ -20,6 +34,8 @@ corresponds to handleractions = edit in restmap.conf
 
 class ConfigApp(admin.MConfigHandler):
     _supported_args = ['token', 'start_ioc_seq']
+    restartRequired = False
+
     def setup(self):
         """
         Set up supported arguments
@@ -58,19 +74,19 @@ class ConfigApp(admin.MConfigHandler):
         After user clicks Save on setup page, take updated parameters,
         normalize them, and save them somewhere
         """
-        name = self.callerArgs.id
-        args = self.callerArgs
 
-        if self.callerArgs.data['token'][0] is None:
-            self.callerArgs.data['token'][0] = ''
+        # define here mapping between field and labels (should match default/setup.xml)
+        labels = {
+            'start_ioc_seq': 'Initial IoC Sequence Number',
+            'token': 'API Token'
+        }
 
         try:
-            self.callerArgs.data['start_ioc_seq'][0] = str(int(self.callerArgs.data['start_ioc_seq'][0]))
-        except (ValueError, TypeError):
-            self.callerArgs.data['start_ioc_seq'][0] = '0'
+            normalize_splunk_setup_args(self.callerArgs.data, labels=labels)
+        except TIEConfigError as exc:
+            logger.error(str(exc))
+            raise admin.AdminManagerExternal(str(exc))
 
-        # Since we are using a conf file to store parameters,
-        # write them to the [setupentity] stanza in app_name/local/myappsetup.conf
         self.writeConf('dcso_tie_setup', 'tie', self.callerArgs.data)
 
 

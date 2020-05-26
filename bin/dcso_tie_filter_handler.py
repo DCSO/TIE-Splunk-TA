@@ -61,26 +61,26 @@ class ConfigApp(admin.MConfigHandler):
         name = self.callerArgs.id
         args = self.callerArgs
 
-        if self.callerArgs.data['ip_confidence'][0] is None:
-            self.callerArgs.data['ip_confidence'][0] = ''
-        if self.callerArgs.data['ip_severity'][0] is None:
-            self.callerArgs.data['ip_severity'][0] = ''
-        if self.callerArgs.data['dom_confidence'][0] is None:
-            self.callerArgs.data['dom_confidence'][0] = ''
-        if self.callerArgs.data['dom_severity'][0] is None:
-            self.callerArgs.data['dom_severity'][0] = ''
-        if self.callerArgs.data['url_confidence'][0] is None:
-            self.callerArgs.data['url_confidence'][0] = ''
-        if self.callerArgs.data['url_severity'][0] is None:
-            self.callerArgs.data['url_severity'][0] = ''
-        if self.callerArgs.data['email_confidence'][0] is None:
-            self.callerArgs.data['email_confidence'][0] = ''
-        if self.callerArgs.data['email_severity'][0] is None:
-            self.callerArgs.data['email_severity'][0] = ''
-        if self.callerArgs.data['confidence'][0] is None:
-            self.callerArgs.data['confidence'][0] = ''
-        if self.callerArgs.data['severity'][0] is None:
-            self.callerArgs.data['severity'][0] = ''
+        if args.data['ip_confidence'][0] is None:
+            args.data['ip_confidence'][0] = ''
+        if args.data['ip_severity'][0] is None:
+            args.data['ip_severity'][0] = ''
+        if args.data['dom_confidence'][0] is None:
+            args.data['dom_confidence'][0] = ''
+        if args.data['dom_severity'][0] is None:
+            args.data['dom_severity'][0] = ''
+        if args.data['url_confidence'][0] is None:
+            args.data['url_confidence'][0] = ''
+        if args.data['url_severity'][0] is None:
+            args.data['url_severity'][0] = ''
+        if args.data['email_confidence'][0] is None:
+            args.data['email_confidence'][0] = ''
+        if args.data['email_severity'][0] is None:
+            args.data['email_severity'][0] = ''
+        if args.data['confidence'][0] is None:
+            args.data['confidence'][0] = ''
+        if args.data['severity'][0] is None:
+            args.data['severity'][0] = ''
 
         # Since we are using a conf file to store parameters, write them to the [setupentity] stanza
         # in app_name/local/myappsetup.conf

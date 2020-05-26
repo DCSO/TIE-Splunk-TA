@@ -1,12 +1,22 @@
 <setup>
     <block title="Configuration of DCSO TIE Splunk AddOn" endpoint="tie/tiesetupendpoint" entity="tie">
-        <text>
-            &lt;strong&gt;API Token&lt;/strong&gt;: either a DCSO Portal Token or a (legacy) TIE Token &lt;br/&gt;&lt;br/&gt;
-            &lt;strong&gt;Initial IoC Sequence Number&lt;/strong&gt;: here you can specify at which sequence number to
-            start
-            fetching IoC. This is useful when you have an index filled, and you are re-installing the add-on new.
-            Leave zero (0) to start from NOW minus 30 days.&lt;br/&gt;&lt;br/&gt;
-        </text>
+        <text><![CDATA[
+            <div>
+                <div style="border: 1px solid darkred; padding: 10px; margin: 0 20px 10px 20px">
+                    <strong>Note</strong>: errors in configuration are currently only visible in the log file
+                    <code style="font-size: smaller">$SPLUNK_HOME/var/log/splunk/dcso_tie.log</code>.
+                    If an error is reported here, you will need to look into the log file.
+                </div>
+                <p class="helpText" style="margin: 10px 20px 10px 20px">
+                    <strong>API Token</strong>: either a DCSO Portal Token or a (legacy) TIE Token.
+                </p>
+                <p class="helpText" style="margin: 10px 20px 10px 20px">
+                    <strong>Initial IoC Sequence Number</strong>: here you can specify at which sequence number to
+                    start fetching IoC. This is useful when you have an index filled, and you are re-installing the
+                    add-on new. Leave zero (0) to start from NOW minus 30 days.
+                </p>
+            </div>
+        ]]></text>
         <input field="token">
             <font color="red">
                 <b>*</b>
@@ -24,7 +34,25 @@
     </block>
 
     <block title="Configure DCSO TIE Filter" endpoint="tie/tiefilterendpoint" entity="filter">
-        <text>Here you can configure various filters for DCSO TIE IoCs.</text>
+        <text><![CDATA[
+            <div>
+            <p class="helpText" style="margin: 10px 20px 10px 20px">
+                Here you can configure various filters for DCSO TIE IoCs.
+            </p>
+            <p class="helpText" style="margin: 10px 20px 10px 20px">
+                Severity and Confidence can be provided as number or as range. For Severity values from 0 till 6 are
+                allowed; Confidence is specified from 0 till 100.<br/>
+                Value and ranges can be formatted as follows:
+            </p>
+            <ul style="color: #6b7785; padding-left: 2rem; margin: 10px 20px 10px 20px">
+                <li><code style="font-size: smaller">1</code> means 1 and higher</li>
+                <li><code style="font-size: smaller">1-</code> means 1 and higher</li>
+                <li><code style="font-size: smaller">1-3</code> means 1 to 3</li>
+                <li><code style="font-size: smaller">-3</code> means 0 (zero) till 4</li>
+                <li><code style="font-size: smaller">30-90</code> means 30 to 90</li>
+            </ul>
+            </div>
+        ]]></text>
         <input field="ip_confidence">
             <label>Confidence for IP</label>
             <type>text</type>
@@ -58,11 +86,11 @@
             <type>text</type>
         </input>
         <input field="confidence">
-            <label>Confidence for General</label>
+            <label>Confidence any other data type</label>
             <type>text</type>
         </input>
         <input field="severity">
-            <label>Severity for General</label>
+            <label>Severity for any other data type</label>
             <type>text</type>
         </input>
 
@@ -70,20 +98,19 @@
 
 
     <block title="Enable Scripts" endpoint="data/inputs/script" entity=".%2Fbin%2Ftie2index.py">
-        <text>
-            The &lt;strong&gt;tie2index.py&lt;/strong&gt; script is responsible for fetching IoCs from DCSO TIE.
-            Specify here with which  interval, and into which index to store the events. When using non-default
-            index, the index must be available in the Indexer or Heavy Forwarder.&lt;br/&gt;
-            &lt;br/&gt;
-            &lt;strong&gt;Make sure to uncheck to enable.&lt;/strong&gt;&lt;br/&gt;
-            &lt;br/&gt;
-        </text>
-        <input field="disabled">
-            <label>tie2index.py (checked means disabled)</label>
+        <text><![CDATA[
+            <p class="helpText" style="margin: 10px 20px 10px 20px">
+            The <strong>tie2index.py</strong> script is responsible for fetching IoCs from DCSO TIE.
+            Specify here with which interval, and into which index to store the events. When using non-default
+            index, the index must be available in the Indexer or Heavy Forwarder.
+            </p>
+        ]]></text>
+        <input field="enabled">
+            <label>Enable $name$</label>
             <type>bool</type>
         </input>
         <input field="interval">
-            <label>Interval for [$name$]</label>
+            <label>Interval (seconds)</label>
             <type>text</type>
         </input>
         <input field="index">
@@ -94,9 +121,12 @@
     </block>
 
     <block title="Configure Proxy" endpoint="tie/tieproxyendpoint" entity="proxy">
-        <text>Here you define the HTTP proxy to use when connecting with DCSO TIE. Leave blank if no proxy is
+        <text><![CDATA[
+            <p class="helpText" style="margin: 10px 20px 10px 20px">
+            Here you define the HTTP proxy to use when connecting with DCSO TIE. Leave blank if no proxy is
             required.
-        </text>
+            </p>
+        ]]></text>
         <input field="host">
             <label>Host</label>
             <type>text</type>
