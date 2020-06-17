@@ -1,19 +1,21 @@
 # Copyright (c) 2017, 2020, DCSO GmbH
 
 from typing import Optional, NoReturn
-import json
 import datetime
-import csv
 import sys
 import os
 
 # we change the path so that this app can run within the Splunk environment
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lib"))
+try:
+    import dcsotie
+except ImportError:
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lib"))
 
-from dcsotie.errors import TIEError
+from dcsotie.errors import TIEError, TIEConfigError
 from dcsotie.fetchers import IoCFetcher
 from dcsotiesplunk.config import normalize_configuration, default_configuration
 from dcsotiesplunk.logger import get_logger
+from dcsotiesplunk.filtering import filter_iocs
 
 logger = get_logger().getChild('tie2index')
 
@@ -38,23 +40,30 @@ try:
     for k, v in proxy_args.items():
         SETUP['proxy'][k] = v
 
-    SETUP = normalize_configuration(SETUP)
+    try:
+        SETUP = normalize_configuration(SETUP)
+    except TIEConfigError as local_exc:
+        logger.error("configuration error: {}".format(local_exc))
+        sys.exit(1)
 
 except ImportError:
     # this will be used when not within Splunk (for example, for testing, developing, ..)
     from dcsotiesplunk.config import read_conf_from_file
 
-    SETUP = read_conf_from_file()
+    try:
+        SETUP = read_conf_from_file()
+    except TIEConfigError as local_exc:
+        logger.error("configuration error: {}".format(local_exc))
+        sys.exit(1)
+
     try:
         os.mkdir(os.path.join(os.path.dirname(__file__), "..", "local"))
     except FileExistsError:
-        # we make sure it exists
+        # we made sure it exists
         pass
-    except Exception as exc:
-        logger.error("failed creating local dir ({})".format(exc))
+    except Exception as local_exc:
+        logger.error("failed creating local dir ({})".format(local_exc))
         sys.exit(1)
-
-csv.field_size_limit(sys.maxsize)
 
 
 def get_proxies() -> Optional[dict]:
@@ -82,8 +91,6 @@ def fetch_iocs() -> NoReturn:
 
     fetcher.state_file = os.path.join(os.path.dirname(__file__), '../local/seq.json')
 
-    f = SETUP['filter']
-
     updated_since = None
     if fetcher.state['seq_number'] == 0:
         # check if we had a starting sequence number configured, and use that instead
@@ -98,29 +105,24 @@ def fetch_iocs() -> NoReturn:
 
     i = 0
     data = fetcher.fetch(updated_since=updated_since, limit=10)
-    while i < 50:
-        i += 1
+    try:
+        while i < 50:
+            i += 1
 
-        iocs = data['iocs']
-        for ioc in iocs:
-            if (ioc['data_type'] == "IPv4" and int(ioc['max_confidence']) >= int(f['ip_confidence'])
-                and int(ioc['max_severity']) >= int(f['ip_severity'])) or (
-                    ioc['data_type'] == "URLVerbatim" and int(ioc['max_confidence']) >= int(
-                f['url_confidence']) and int(ioc['max_severity']) >= int(f['url_severity'])) or (
-                    ioc['data_type'] == "DomainName" and int(ioc['max_confidence']) >= int(
-                f['dom_confidence']) and int(ioc['max_severity']) >= int(f['dom_severity'])) or (
-                    int(ioc['max_confidence']) >= int(f['confidence']) and
-                    int(ioc['max_severity']) >= int(f['severity'])):
-                print(json.dumps(ioc), file=sys.stdout)
+            filter_iocs(data['iocs'], SETUP['filter'], sys.stdout)
 
-        fetcher.store_state()
-        if not fetcher.have_next:
-            break
+            fetcher.store_state()
+            if not fetcher.have_next:
+                break
 
-        data = fetcher.next()
+            data = fetcher.next()
+    except TIEConfigError as exc:
+        logger.error("configuration error fetching: {}".format(exc))
+    except TIEError as exc:
+        logger.error("filtering IoCs error ({})".format(exc))
 
 
-if __name__ == "__main__":
+def run():
     if 'TIE_TOKEN' in os.environ:
         SETUP['tie']['token'] = os.environ['TIE_TOKEN']
 
@@ -131,3 +133,7 @@ if __name__ == "__main__":
         pass
     except TIEError as exc:
         logger.error(str(exc))
+
+
+if __name__ == "__main__":
+    run()
