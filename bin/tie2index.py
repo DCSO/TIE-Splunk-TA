@@ -1,14 +1,13 @@
 # Copyright (c) 2017, 2019, DCSO GmbH
 
-import urllib2
-import json
-import datetime
 import csv
+import datetime
+import json
+import os
 import re
 import sys
-import os
-from cStringIO import StringIO
-from sets import Set
+
+import urllib2
 from splunk.clilib import cli_common as cli
 
 csv.field_size_limit(sys.maxsize)
@@ -32,7 +31,7 @@ if str(proxy_args['host']):
 
 def first_run():
     period = (datetime.date.today() - datetime.timedelta(30)).strftime('%Y-%m-%dT%H:%M:%SZ')
-    request = urllib2.Request("{}?updated_at_since={}&order_by=seq&direction=asc".format(TIE_API,period))
+    request = urllib2.Request("{}?first_seen_at={}&order_by=seq&direction=asc".format(TIE_API,period))
     request.add_header("X-Authorization", 'bearer {}'.format(TIE_TOKEN))
     request.add_header("Accept", 'application/json')
     contents = json.loads(urllib2.urlopen(request).read())
@@ -66,9 +65,9 @@ if __name__ == "__main__":
         with open(os.path.join(os.path.dirname(__file__),'../local/seq.json'), 'r') as seqinput:
             seqfile = json.load(seqinput)
     else:
-        data = {'tie':{'seq_number': 0}}
+        seqfile = {'tie':{'seq_number': 0}}
         with open(os.path.join(os.path.dirname(__file__),'../local/seq.json'), 'w') as outfile:
-            json.dump(data,outfile)
+            json.dump(seqfile, outfile)
 
     tie_args = cli.getConfStanza('dcso_tie_setup','tie')
     filter_args = cli.getConfStanza('dcso_tie_setup','filter')
