@@ -104,7 +104,7 @@ def fetch_iocs() -> NoReturn:
         logger.info("fetching IoCs using sequence number {}".format(fetcher.state['seq_number']))
 
     i = 0
-    data = fetcher.fetch(updated_since=updated_since, limit=10)
+    data = fetcher.fetch(sequence=fetcher.state['seq_number'], updated_since=updated_since, limit=10)
     try:
         while i < 50:
             i += 1
