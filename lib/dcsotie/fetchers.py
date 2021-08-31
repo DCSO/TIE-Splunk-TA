@@ -108,7 +108,7 @@ class IoCFetcher(TIEngine):
 
         # store highest sequence
         if len(data['iocs']) > 0:
-            self.state['seq_number'] = sorted([ioc['min_seq'] for ioc in data['iocs']])[-1]
+            self.state['seq_number'] = sorted([ioc['max_seq'] for ioc in data['iocs']])[-1]
 
         try:
             if self._raw:
