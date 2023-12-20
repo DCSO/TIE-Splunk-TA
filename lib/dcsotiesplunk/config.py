@@ -1,5 +1,4 @@
-# Copyright (c) 2020, DCSO GmbH
-
+# Copyright (c) 2020, 2023, DCSO GmbH
 from configparser import ConfigParser
 from typing import NoReturn, Optional, Any, Union
 
@@ -7,30 +6,30 @@ from dcsotie.errors import TIEConfigError
 from dcsotie.utils import Range, SeverityRange, ConfidenceRange
 
 CONFIG_SCHEMA = {
-    'filter': {
-        'ip_confidence': (ConfidenceRange, 80),
-        'ip_severity': (SeverityRange, 1),
-        'dom_confidence': (ConfidenceRange, 80),
-        'dom_severity': (SeverityRange, 1),
-        'url_confidence': (ConfidenceRange, 80),
-        'url_severity': (SeverityRange, 1),
-        'email_confidence': (ConfidenceRange, 80),
-        'email_severity': (SeverityRange, 1),
-        'confidence': (ConfidenceRange, 80),
-        'severity': (SeverityRange, 2),
+    "filter": {
+        "ip_confidence": (ConfidenceRange, 80),
+        "ip_severity": (SeverityRange, 1),
+        "dom_confidence": (ConfidenceRange, 80),
+        "dom_severity": (SeverityRange, 1),
+        "url_confidence": (ConfidenceRange, 80),
+        "url_severity": (SeverityRange, 1),
+        "email_confidence": (ConfidenceRange, 80),
+        "email_severity": (SeverityRange, 1),
+        "confidence": (ConfidenceRange, 80),
+        "severity": (SeverityRange, 2),
     },
-    'tie': {
-        'token': (str, ''),
-        'feed_api': (str, 'https://tie.dcso.de/api/v1/iocs'),
-        'pingback_api': (str, 'https://pingback.dcso.de/api/v1/submit'),
-        'start_ioc_seq': (int, 0),
+    "tie": {
+        "client_id": (str, ""),
+        "client_secret": (str, ""),
+        "feed_api": (str, "https://api.dcso.de/tie/v1/iocs"),
+        "updated_at_since": (str, ""),
     },
-    'proxy': {
-        'host': (str, ''),
-        'port': (str, ''),
-        'user': (str, ''),
-        'password': (str, ''),
-    }
+    "proxy": {
+        "host": (str, ""),
+        "port": (str, ""),
+        "user": (str, ""),
+        "password": (str, ""),
+    },
 }
 
 
@@ -52,8 +51,8 @@ def read_conf_from_file(file: Optional[str] = None) -> Any:
     cfg = ConfigParser()
 
     locations = [
-        '../default/dcso_tie_setup.conf',
-        'default/dcso_tie_setup.conf',
+        "../default/dcso_tie_setup.conf",
+        "default/dcso_tie_setup.conf",
     ]
 
     if file:
@@ -84,9 +83,9 @@ def normalize_configuration(configuration: Union[ConfigParser, dict]) -> dict:
                     res[section].setdefault(k, cfg_value)
                 else:
                     try:
-                        if k.endswith('severity'):
+                        if k.endswith("severity"):
                             res[section].setdefault(k, SeverityRange(cfg_value))
-                        elif k.endswith('confidence'):
+                        elif k.endswith("confidence"):
                             res[section].setdefault(k, ConfidenceRange(cfg_value))
                         else:
                             res[section].setdefault(k, Range(cfg_value))
@@ -123,6 +122,7 @@ def normalize_splunk_setup_args(data: dict, labels: Optional[dict] = None) -> No
     :param labels: optional labels for the keys within data (helpful for more human readable errors)
     :raises TIEConfigError: when a value is invalid
     """
+
     if labels is None:
         labels = {}
 
@@ -138,25 +138,16 @@ def normalize_splunk_setup_args(data: dict, labels: Optional[dict] = None) -> No
             # if not a string, all is ok
             pass
 
-        if k.endswith('severity'):
-            try:
-                data[k][0] = str(SeverityRange(v))
-            except ValueError:
-                raise TIEConfigError("invalid range value for {} (should be between 0 and 6)".format(label))
-        elif k == 'token':
+        if k == "client_id":
             if not v:
                 raise TIEConfigError("{} is required".format(label))
             data[k][0] = str(v)
-        elif k.endswith('confidence'):
+        elif k == "client_secret":
+            if not v:
+                raise TIEConfigError("{} is required".format(label))
+            data[k][0] = str(v)
+        elif k == "updated_at_since":
             try:
-                data[k][0] = str(ConfidenceRange(v))
-            except ValueError:
-                raise TIEConfigError("invalid range value for {} (should be between 0 and 100)".format(label))
-        elif k == 'start_ioc_seq':
-            try:
-                v = int(v)
-                if v < 0:
-                    raise ValueError
                 data[k][0] = str(v)
             except (TypeError, ValueError):
-                raise TIEConfigError("invalid positive number for {}".format(label))
+                raise TIEConfigError("invalid date string for {}".format(label))

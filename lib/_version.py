@@ -1,3 +1,3 @@
-# Copyright (c) 2020, DCSO GmbH
+# Copyright (c) 2020, 2023 DCSO GmbH
 
-__version__ = "2.0.0b1"
+__version__ = "3.0.0"

@@ -8,27 +8,34 @@
                     If an error is reported here, you will need to look into the log file.
                 </div>
                 <p class="helpText" style="margin: 10px 20px 10px 20px">
-                    <strong>API Token</strong>: either a DCSO Portal Token or a (legacy) TIE Token.
+                    <strong>API Client ID</strong>: DCSO API client_id.
                 </p>
                 <p class="helpText" style="margin: 10px 20px 10px 20px">
-                    <strong>Initial IoC Sequence Number</strong>: here you can specify at which sequence number to
-                    start fetching IoC. This is useful when you have an index filled, and you are re-installing the
-                    add-on new. Leave zero (0) to start from NOW minus 30 days.
+                    <strong>API Client Secret</strong>: DCSO API client_secret.
+                </p>
+                <p class="helpText" style="margin: 10px 20px 10px 20px">
+                    <strong>Initial IoC Update Time</strong>: here you can specify at from which updated time to start
+                    fetching IoC. This should be a timestamp in RFC3339 format. This is useful when you have an index
+                    filled, and you are re-installing the add-on new. Leave zero (0) to start from NOW minus 30 days.
                 </p>
             </div>
         ]]></text>
-        <input field="token">
+        <input field="client_id">
+            <label>API Client ID</label>
+            <type>text</type>
+        </input>
+        <input field="client_secret">
             <font color="red">
                 <b>*</b>
             </font>
-            <label>API Token</label>
+            <label>API Client Secret</label>
             <type>text</type>
             <text>
 
             </text>
         </input>
-        <input field="start_ioc_seq">
-            <label>Initial IoC Sequence Number</label>
+        <input field="updated_at_since">
+            <label>Initial IoC Update Time</label>
             <type>text</type>
         </input>
     </block>

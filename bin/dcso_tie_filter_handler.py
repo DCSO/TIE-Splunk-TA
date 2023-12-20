@@ -1,9 +1,10 @@
-# Copyright (c) 2017, 2020, DCSO GmbH
+# Copyright (c) 2017, 2023, DCSO GmbH
 
 # This file is based on the skeleton Python script provided by Splunk.
 # It is adapted to be more conform to Python code styling.
 
 import splunk.admin as admin
+
 # import splunk.entity as en
 
 """
@@ -24,8 +25,18 @@ class ConfigApp(admin.MConfigHandler):
         Set up supported arguments
         """
         if self.requestedAction == admin.ACTION_EDIT:
-            for arg in ['ip_confidence', 'ip_severity', 'dom_confidence', 'dom_severity', 'url_confidence',
-                        'url_severity', 'email_confidence', 'email_severity', 'confidence', 'severity']:
+            for arg in [
+                "ip_confidence",
+                "ip_severity",
+                "dom_confidence",
+                "dom_severity",
+                "url_confidence",
+                "url_severity",
+                "email_confidence",
+                "email_severity",
+                "confidence",
+                "severity",
+            ]:
                 self.supportedArgs.addOptArg(arg)
 
     def handleList(self, confInfo):
@@ -49,10 +60,23 @@ class ConfigApp(admin.MConfigHandler):
         if None != confDict:
             for stanza, settings in list(confDict.items()):
                 for key, val in list(settings.items()):
-                    if key in ['ip_confidence', 'ip_severity', 'dom_confidence', 'dom_severity', 'url_confidence',
-                               'url_severity', 'email_confidence', 'email_severity', 'confidence',
-                               'severity'] and val in [None, '']:
-                        val = ''
+                    if (
+                        key
+                        in [
+                            "ip_confidence",
+                            "ip_severity",
+                            "dom_confidence",
+                            "dom_severity",
+                            "url_confidence",
+                            "url_severity",
+                            "email_confidence",
+                            "email_severity",
+                            "confidence",
+                            "severity",
+                        ]
+                        and val in [None, ""]
+                    ):
+                        val = ""
                     confInfo[stanza].append(key, val)
 
     # After user clicks Save on setup page, take updated parameters,
@@ -61,30 +85,30 @@ class ConfigApp(admin.MConfigHandler):
         name = self.callerArgs.id
         args = self.callerArgs
 
-        if args.data['ip_confidence'][0] is None:
-            args.data['ip_confidence'][0] = ''
-        if args.data['ip_severity'][0] is None:
-            args.data['ip_severity'][0] = ''
-        if args.data['dom_confidence'][0] is None:
-            args.data['dom_confidence'][0] = ''
-        if args.data['dom_severity'][0] is None:
-            args.data['dom_severity'][0] = ''
-        if args.data['url_confidence'][0] is None:
-            args.data['url_confidence'][0] = ''
-        if args.data['url_severity'][0] is None:
-            args.data['url_severity'][0] = ''
-        if args.data['email_confidence'][0] is None:
-            args.data['email_confidence'][0] = ''
-        if args.data['email_severity'][0] is None:
-            args.data['email_severity'][0] = ''
-        if args.data['confidence'][0] is None:
-            args.data['confidence'][0] = ''
-        if args.data['severity'][0] is None:
-            args.data['severity'][0] = ''
+        if args.data["ip_confidence"][0] is None:
+            args.data["ip_confidence"][0] = ""
+        if args.data["ip_severity"][0] is None:
+            args.data["ip_severity"][0] = ""
+        if args.data["dom_confidence"][0] is None:
+            args.data["dom_confidence"][0] = ""
+        if args.data["dom_severity"][0] is None:
+            args.data["dom_severity"][0] = ""
+        if args.data["url_confidence"][0] is None:
+            args.data["url_confidence"][0] = ""
+        if args.data["url_severity"][0] is None:
+            args.data["url_severity"][0] = ""
+        if args.data["email_confidence"][0] is None:
+            args.data["email_confidence"][0] = ""
+        if args.data["email_severity"][0] is None:
+            args.data["email_severity"][0] = ""
+        if args.data["confidence"][0] is None:
+            args.data["confidence"][0] = ""
+        if args.data["severity"][0] is None:
+            args.data["severity"][0] = ""
 
         # Since we are using a conf file to store parameters, write them to the [setupentity] stanza
         # in app_name/local/myappsetup.conf
-        self.writeConf('dcso_tie_setup', 'filter', self.callerArgs.data)
+        self.writeConf("dcso_tie_setup", "filter", self.callerArgs.data)
 
 
 # initialize the handler
