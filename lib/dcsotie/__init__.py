@@ -1,10 +1,11 @@
-# Copyright (c) 2020, DCSO GmbH
+# Copyright (c) 2020, 2023, DCSO GmbH
 
 from typing import TypeVar, Tuple, Union
 import os
 
-TIE_API = os.getenv("TIE_API", "https://tie.dcso.de/api/v1")
-TIE_TOKEN = os.getenv("TIE_TOKEN", "")
+TIE_API = os.getenv("TIE_API", "https://api.dcso.de/tie/v1")
+TIE_CLIENT_ID = os.getenv("TIE_CLIENT_ID", "")
+TIE_CLIENT_SECRET = os.getenv("TIE_CLIENT_SECRET", "")
 
 TEST_API = "http://unittest.local/api"
 

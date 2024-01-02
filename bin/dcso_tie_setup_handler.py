@@ -1,4 +1,4 @@
-# Copyright (c) 2017, 2020, DCSO GmbH
+# Copyright (c) 2017, 2023, DCSO GmbH
 
 # This file is based on the skeleton Python script provided by Splunk.
 # It is adapted to be more conform to Python code styling.
@@ -7,6 +7,7 @@ import os
 import sys
 
 import splunk.admin as admin
+
 # import splunk.entity as en
 
 try:
@@ -33,7 +34,7 @@ corresponds to handleractions = edit in restmap.conf
 
 
 class ConfigApp(admin.MConfigHandler):
-    _supported_args = ['token', 'start_ioc_seq']
+    _supported_args = ["client_id", "client_secret", "updated_at_since"]
     restartRequired = False
 
     def setup(self):
@@ -66,7 +67,7 @@ class ConfigApp(admin.MConfigHandler):
             for stanza, settings in list(confDict.items()):
                 for key, val in list(settings.items()):
                     if key in ConfigApp._supported_args and not val:
-                        val = ''
+                        val = ""
                     confInfo[stanza].append(key, val)
 
     def handleEdit(self, confInfo):
@@ -77,8 +78,9 @@ class ConfigApp(admin.MConfigHandler):
 
         # define here mapping between field and labels (should match default/setup.xml)
         labels = {
-            'start_ioc_seq': 'Initial IoC Sequence Number',
-            'token': 'API Token'
+            "updated_at_since": "Initial IoC Update Time",
+            "client_id": "API Client ID",
+            "client_secret": "API Client Secret",
         }
 
         try:
@@ -87,7 +89,7 @@ class ConfigApp(admin.MConfigHandler):
             logger.error(str(exc))
             raise admin.AdminManagerExternal(str(exc))
 
-        self.writeConf('dcso_tie_setup', 'tie', self.callerArgs.data)
+        self.writeConf("dcso_tie_setup", "tie", self.callerArgs.data)
 
 
 # initialize the handler

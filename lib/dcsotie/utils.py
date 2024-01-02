@@ -1,16 +1,16 @@
-# Copyright (c) 2020, DCSO GmbH
+# Copyright (c) 2020, 2023, DCSO GmbH
 
 from typing import Dict, Optional, Tuple, Union
 import re
 
 from requests.utils import parse_header_links
 
-_RE_RANGE_STR = re.compile(r'^(\d*)-(\d*)$')
+_RE_RANGE_STR = re.compile(r"^(\d*)-(\d*)$")
 ARange = Union[int, Tuple[int, int], str]
 
 
 class APIRelationshipLinks:
-    relationships = ['first', 'last', 'next', 'previous']
+    relationships = ["first", "last", "next", "previous"]
 
     def __init__(self, header: str):
         self.first: Optional[str] = None
@@ -28,8 +28,8 @@ class APIRelationshipLinks:
         links = parse_header_links(header)
         for link in links:
             try:
-                rel = link['rel']
-                url = link['url']
+                rel = link["rel"]
+                url = link["url"]
             except KeyError:
                 # ignore links not having relationship and url
                 continue
@@ -52,6 +52,7 @@ class Range:
     """
     Range definition
     """
+
     max_upper = None
 
     def __init__(self, r: ARange):
@@ -76,8 +77,8 @@ class Range:
                 m = _RE_RANGE_STR.match(r)
                 if m is None:
                     raise ValueError("range string not valid; was {}".format(r))
-                self.lower = int(m.group(1)) if m.group(1) != '' else None
-                self.upper = int(m.group(2)) if m.group(2) != '' else None
+                self.lower = int(m.group(1)) if m.group(1) != "" else None
+                self.upper = int(m.group(2)) if m.group(2) != "" else None
                 if self.lower is None and self.upper is None:
                     raise ValueError("range not valid; was {}".format(r))
         else:
@@ -87,10 +88,17 @@ class Range:
             if self.upper is None:
                 self.upper = self.__class__.max_upper
             elif self.upper > self.__class__.max_upper:
-                raise ValueError("range should be between 0 and {} (was {})".format(
-                    self.__class__.max_upper, str(self)))
+                raise ValueError(
+                    "range should be between 0 and {} (was {})".format(
+                        self.__class__.max_upper, str(self)
+                    )
+                )
 
-        if self.upper is not None and self.lower is not None and self.lower > self.upper:
+        if (
+            self.upper is not None
+            and self.lower is not None
+            and self.lower > self.upper
+        ):
             raise ValueError("range lower is higher than upper; was {}".format(r))
 
     def in_range(self, i: int) -> bool:
@@ -102,9 +110,10 @@ class Range:
         return self.lower <= i <= self.upper
 
     def __str__(self) -> str:
-        return '{}-{}'.format(
-            self.lower if self.lower is not None else '',
-            self.upper if self.upper is not None else '')
+        return "{}-{}".format(
+            self.lower if self.lower is not None else "",
+            self.upper if self.upper is not None else "",
+        )
 
     def __eq__(self, other):
         return other.lower == self.lower and other.upper == self.upper
@@ -114,6 +123,7 @@ class SeverityRange(Range):
     """
     SeverityRange is a Range which lower is 0 and upper maximum 6.
     """
+
     max_upper = 6
 
 
@@ -121,4 +131,5 @@ class ConfidenceRange(Range):
     """
     ConfidenceRange is a Range which lower is 0 and upper maximum 100.
     """
+
     max_upper = 100

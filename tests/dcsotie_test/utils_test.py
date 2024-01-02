@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DCSO GmbH
+# Copyright (c) 2020, 2023, DCSO GmbH
 
 import os
 import sys
@@ -7,19 +7,20 @@ import unittest
 try:
     import dcsotie
 except ImportError:
-    sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', "lib"))
+    sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "lib"))
 
 from dcsotie.utils import APIRelationshipLinks, Range
 
-TEST_LINK_HEADER = '''
-<https://tie.dcso.de/api/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=60>; rel=previous, <https://tie.dcso.de/api/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=100>; rel=next, <https://tie.dcso.de/api/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=680>; rel=last, <https://tie.dcso.de/api/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=0>; rel=first
-'''
+TEST_LINK_HEADER = """
+<https://api.dcso.de/tie/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=60>; rel=previous, <https://api.dcso.de/tie/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=100>; rel=next, <https://api.dcso.de/tie/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=680>; rel=last, <https://api.dcso.de/tie/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=0>; rel=first
+"""
 
 TEST_LINK_HEADER_EXP = {
-    'first': 'https://tie.dcso.de/api/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=0',
-    'last': 'https://tie.dcso.de/api/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=680',
-    'next': 'https://tie.dcso.de/api/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=100',
-    'previous': 'https://tie.dcso.de/api/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=60'}
+    "first": "https://api.dcso.de/tie/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=0",
+    "last": "https://api.dcso.de/tie/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=680",
+    "next": "https://api.dcso.de/tie/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=100",
+    "previous": "https://api.dcso.de/tie/v1/raw_iocs?limit=20&data_type=domainname%2Cipv4&offset=60",
+}
 
 
 class TestAPIRelationshipLinks(unittest.TestCase):
@@ -34,7 +35,9 @@ class TestAPIRelationshipLinks(unittest.TestCase):
             self.assertEqual(TEST_LINK_HEADER_EXP[rel], link)
 
     def test_relationships_are_optional(self):
-        links = APIRelationshipLinks("<https://next>; rel=next, <https://previous>; rel=previous")
+        links = APIRelationshipLinks(
+            "<https://next>; rel=next, <https://previous>; rel=previous"
+        )
         self.assertIsNone(links.first)
         self.assertIsNone(links.last)
         self.assertIsNotNone(links.next)
@@ -60,7 +63,7 @@ class TestRange(unittest.TestCase):
             Range((5, 2))
 
     def test_str_lower_upper(self):
-        r = Range('2-5')
+        r = Range("2-5")
         self.assertEqual(2, r.lower)
         self.assertEqual(5, r.upper)
         self.assertTrue(r.in_range(3))
@@ -70,21 +73,21 @@ class TestRange(unittest.TestCase):
         self.assertFalse(r.in_range(1))
 
     def test_str_only_upper(self):
-        r = Range('-5')
+        r = Range("-5")
         self.assertIsNone(r.lower)
         self.assertEqual(5, r.upper)
         self.assertTrue(r.in_range(1))
         self.assertFalse(r.in_range(6))
 
     def test_str_integer(self):
-        r = Range('3')
+        r = Range("3")
         self.assertIsNone(r.upper)
         self.assertEqual(3, r.lower)
         self.assertFalse(r.in_range(1))
         self.assertTrue(r.in_range(6))
 
     def test_str_only_lower(self):
-        r = Range('2-')
+        r = Range("2-")
         self.assertEqual(2, r.lower)
         self.assertIsNone(r.upper)
         self.assertFalse(r.in_range(1))
@@ -93,11 +96,11 @@ class TestRange(unittest.TestCase):
 
     def test_str_invalid(self):
         with self.assertRaises(ValueError):
-            Range('-')
+            Range("-")
 
         with self.assertRaises(ValueError):
-            Range('asdf-5')
+            Range("asdf-5")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

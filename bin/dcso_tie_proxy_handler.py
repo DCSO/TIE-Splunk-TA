@@ -1,9 +1,10 @@
-# Copyright (c) 2017, 2020, DCSO GmbH
+# Copyright (c) 2017, 2023, DCSO GmbH
 
 # This file is based on the skeleton Python script provided by Splunk.
 # It is adapted to be more conform to Python code styling.
 
 import splunk.admin as admin
+
 # import splunk.entity as en
 
 """
@@ -24,7 +25,7 @@ class ConfigApp(admin.MConfigHandler):
         Set up supported arguments
         """
         if self.requestedAction == admin.ACTION_EDIT:
-            for arg in ['host', 'port', 'user', 'password']:
+            for arg in ["host", "port", "user", "password"]:
                 self.supportedArgs.addOptArg(arg)
 
     def handleList(self, confInfo):
@@ -48,8 +49,11 @@ class ConfigApp(admin.MConfigHandler):
         if None != confDict:
             for stanza, settings in list(confDict.items()):
                 for key, val in list(settings.items()):
-                    if key in ['host', 'port', 'user', 'password'] and val in [None, '']:
-                        val = ''
+                    if key in ["host", "port", "user", "password"] and val in [
+                        None,
+                        "",
+                    ]:
+                        val = ""
                     confInfo[stanza].append(key, val)
 
     def handleEdit(self, confInfo):
@@ -60,18 +64,18 @@ class ConfigApp(admin.MConfigHandler):
         name = self.callerArgs.id
         args = self.callerArgs
 
-        if self.callerArgs.data['host'][0] is None:
-            self.callerArgs.data['host'][0] = ''
-        if self.callerArgs.data['port'][0] is None:
-            self.callerArgs.data['port'][0] = ''
-        if self.callerArgs.data['user'][0] is None:
-            self.callerArgs.data['user'][0] = ''
-        if self.callerArgs.data['password'][0] is None:
-            self.callerArgs.data['password'][0] = ''
+        if self.callerArgs.data["host"][0] is None:
+            self.callerArgs.data["host"][0] = ""
+        if self.callerArgs.data["port"][0] is None:
+            self.callerArgs.data["port"][0] = ""
+        if self.callerArgs.data["user"][0] is None:
+            self.callerArgs.data["user"][0] = ""
+        if self.callerArgs.data["password"][0] is None:
+            self.callerArgs.data["password"][0] = ""
 
         # Since we are using a conf file to store parameters,
         # write them to the [setupentity] stanza in app_name/local/myappsetup.conf
-        self.writeConf('dcso_tie_setup', 'proxy', self.callerArgs.data)
+        self.writeConf("dcso_tie_setup", "proxy", self.callerArgs.data)
 
 
 # initialize the handler

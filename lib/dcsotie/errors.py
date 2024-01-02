@@ -1,4 +1,5 @@
-# Copyright (c) 2020, DCSO GmbH
+# Copyright (c) 2020, 2023, DCSO GmbH
+
 
 class TIEError(Exception):
     pass

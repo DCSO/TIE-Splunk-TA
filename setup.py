@@ -1,4 +1,4 @@
-# Copyright (c) 2020, DCSO GmbH
+# Copyright (c) 2020, 2023, DCSO GmbH
 
 import os
 import fileinput
@@ -17,6 +17,7 @@ SPLUNKAPP_BASE_DIR = "DCSO_TIE_AddOn" + str(VERSION.major)
 # SPLUNKAPP_DISTNAME is the filename of the distribution
 SPLUNKAPP_DISTNAME = "DCSO_TIE_Splunk_AddOn" + str(VERSION.major)
 
+
 class SplunkDist(sdist):
     description = "create a Splunk distribution"
     splunkapp_base_dir = SPLUNKAPP_BASE_DIR
@@ -26,16 +27,18 @@ class SplunkDist(sdist):
 
     def _write_version(self, base_name):
         # default/app.conf
-        app_conf = 'default/app.conf'
+        app_conf = "default/app.conf"
         if app_conf not in self.filelist.files:
-            raise DistutilsFileError("file {} not in distribution file list".format(app_conf))
+            raise DistutilsFileError(
+                "file {} not in distribution file list".format(app_conf)
+            )
 
         p = os.path.join(base_name, app_conf)
         with fileinput.input(p, inplace=True, backup=False) as f:
             for line in f:
                 # remove ending whitespace; print adds newline
                 line = line.rstrip()
-                if line.startswith('version'):
+                if line.startswith("version"):
                     print("version = {}".format(__version__))
                 else:
                     print(line)
@@ -55,19 +58,22 @@ class SplunkDist(sdist):
 
         archive_files = []  # remember names of files we create
         # tar archive must be created last to avoid overwrite and remove
-        if 'tar' in self.formats:
-            self.formats.append(self.formats.pop(self.formats.index('tar')))
+        if "tar" in self.formats:
+            self.formats.append(self.formats.pop(self.formats.index("tar")))
 
         for fmt in self.formats:
-            file = self.make_archive(base_name, fmt, base_dir=base_dir,
-                                     owner=self.owner, group=self.group)
+            file = self.make_archive(
+                base_name, fmt, base_dir=base_dir, owner=self.owner, group=self.group
+            )
 
-            new_file = file.replace(SPLUNKAPP_BASE_DIR, SPLUNKAPP_DISTNAME + '-' + __version__)
+            new_file = file.replace(
+                SPLUNKAPP_BASE_DIR, SPLUNKAPP_DISTNAME + "-" + __version__
+            )
             os.rename(file, new_file)
             log.info("renamed distribution file as {}".format(new_file))
 
             archive_files.append(new_file)
-            self.distribution.dist_files.append(('sdist', '', new_file))
+            self.distribution.dist_files.append(("sdist", "", new_file))
 
         self.archive_files = archive_files
 
@@ -75,14 +81,15 @@ class SplunkDist(sdist):
             dir_util.remove_tree(base_dir, dry_run=self.dry_run)
 
 
-setup(name='dcso_tie_splunk_ta',
-      version=__version__,
-      description="DCSO Threat Intelligence Engine (TIE) Technical Add-on for Splunk 8.0",
-      author='DCSO GmbH',
-      author_email='ti-support@dcso.de',
-      url="https://tie.dcso.de",
-      package_dir={'': 'lib'},
-      cmdclass={
-          'splunkdist': SplunkDist,
-      }
-      )
+setup(
+    name="dcso_tie_splunk_ta",
+    version=__version__,
+    description="DCSO Threat Intelligence Engine (TIE) Technical Add-on for Splunk 8.0",
+    author="DCSO GmbH",
+    author_email="ti-support@dcso.de",
+    url="https://tie.dcso.de",
+    package_dir={"": "lib"},
+    cmdclass={
+        "splunkdist": SplunkDist,
+    },
+)

@@ -1,451 +1,262 @@
 {
-  "has_more": true,
   "iocs": [
     {
-      "ioc_attributes": [],
-      "t_1": null,
-      "first_seen": "2018-03-27 21:25:03+02:00",
-      "created_at": "2018-03-27 21:45:31.058401+02:00",
-      "max_seq": 2592121157,
-      "max_confidence": 80,
-      "max_severity": 2,
-      "min_seq": 2592121157,
-      "gamma": 3.85e-06,
-      "updated_at": "2018-05-22 20:49:43.340251+02:00",
-      "families": [],
-      "source_pseudonyms": [
-        "4c77b81e"
-      ],
-      "observation_attributes": [],
-      "actors": [],
-      "data_type": "DomainName",
-      "enrich": false,
-      "hotness": 0.0,
-      "categories": [
-        "malware",
-        "phishing"
+      "data_type": "ExactHash",
+      "value": "md5:aee9499b3e64b93e5cbff2e147d997bb",
+      "id": "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399",
+      "event_ids": [
+        "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
       "event_attributes": [
-        "category:malware"
+        "info:URLhaus IOCs for 2023-11-30",
+        "misp-uuid:d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
-      "value": "abhvpowdbpxxukw.co.uk",
-      "enriched_at": "2018-03-27 22:03:43.233410+02:00",
-      "a_1": null,
       "min_confidence": 80,
-      "enrichment_requested_at": null,
-      "n_occurrences": 1,
-      "entity_ids": [],
-      "comment": null,
-      "last_seen": "2018-05-22 20:23:03+02:00",
-      "event_ids": [
-        "b5709a16-0911-4617-9a08-10e6953f6270"
-      ],
+      "max_confidence": 80,
       "min_severity": 2,
-      "id": "40d97788-a33e-43bb-9c8c-be20822c2df7"
+      "max_severity": 2,
+      "source": [
+        "threatfox"
+      ],
+      "created_at": "2023-11-30T23:44:09Z",
+      "updated_at": "2023-11-30T23:44:09Z",
+      "categories": [],
+      "actors": [],
+      "families": []
     },
     {
-      "ioc_attributes": [
-        "category:uncategorized"
-      ],
-      "t_1": null,
-      "first_seen": "2018-03-23 02:28:03+01:00",
-      "created_at": "2018-03-23 02:45:01.343628+01:00",
-      "max_seq": 2592114266,
-      "max_confidence": 80,
-      "max_severity": 2,
-      "min_seq": 2592114266,
-      "gamma": 3.85e-06,
-      "updated_at": "2018-05-22 20:49:40.281063+02:00",
-      "families": [],
-      "source_pseudonyms": [
-        "4c77b81e"
-      ],
-      "observation_attributes": [],
-      "actors": [],
-      "data_type": "DomainName",
-      "enrich": false,
-      "hotness": 0.0,
-      "categories": [
-        "malware",
-        "phishing"
+      "data_type": "ExactHash",
+      "value": "sha256:8fc9a3ff1e5e4ab0d65e1504c40cc6c8c45b6cb6050b853c426ba739f65154c2",
+      "id": "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399",
+      "event_ids": [
+        "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
       "event_attributes": [
-        "category:malware"
+        "info:URLhaus IOCs for 2023-11-30",
+        "misp-uuid:d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
-      "value": "dblbkcbfmabmfakd.website",
-      "enriched_at": "2018-03-23 03:26:31.840171+01:00",
-      "a_1": null,
       "min_confidence": 80,
-      "enrichment_requested_at": null,
-      "n_occurrences": 1,
-      "entity_ids": [],
-      "comment": null,
-      "last_seen": "2018-05-22 20:23:03+02:00",
-      "event_ids": [
-        "b5709a16-0911-4617-9a08-10e6953f6270"
-      ],
+      "max_confidence": 80,
       "min_severity": 2,
-      "id": "db67c308-8b3b-4362-9d68-a6127b85e377"
+      "max_severity": 2,
+      "source": [
+        "threatfox"
+      ],
+      "created_at": "2023-11-30T23:44:09Z",
+      "updated_at": "2023-11-30T23:44:09Z",
+      "categories": [],
+      "actors": [],
+      "families": []
     },
     {
-      "ioc_attributes": [
-        "dns-txt-entry:v=spf1 +a +mx +ip4:176.123.0.55 ~all"
-      ],
-      "t_1": null,
-      "first_seen": "2018-01-22 11:08:03+01:00",
-      "created_at": "2018-01-22 11:45:17.266931+01:00",
-      "max_seq": 2592133150,
-      "max_confidence": 80,
-      "max_severity": 2,
-      "min_seq": 2592133150,
-      "gamma": 3.85e-06,
-      "updated_at": "2018-05-22 20:49:50.223247+02:00",
-      "families": [],
-      "source_pseudonyms": [
-        "4c77b81e"
-      ],
-      "observation_attributes": [],
-      "actors": [],
-      "data_type": "DomainName",
-      "enrich": false,
-      "hotness": 0.0,
-      "categories": [
-        "malware",
-        "phishing"
+      "data_type": "ExactHash",
+      "value": "md5:aee9499b3e64b93e5cbff2e147d997bb",
+      "id": "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399",
+      "event_ids": [
+        "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
       "event_attributes": [
-        "category:malware"
+        "info:URLhaus IOCs for 2023-11-30",
+        "misp-uuid:d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
-      "value": "dropboxing.world",
-      "enriched_at": "2018-01-23 22:49:03.060719+01:00",
-      "a_1": null,
       "min_confidence": 80,
-      "enrichment_requested_at": null,
-      "n_occurrences": 1,
-      "entity_ids": [],
-      "comment": null,
-      "last_seen": "2018-05-22 20:23:03+02:00",
-      "event_ids": [
-        "b5709a16-0911-4617-9a08-10e6953f6270"
-      ],
+      "max_confidence": 80,
       "min_severity": 2,
-      "id": "b7ea2f38-8eea-40f7-85f2-b4f22f6f3419"
+      "max_severity": 2,
+      "source": [
+        "threatfox"
+      ],
+      "created_at": "2023-11-30T23:45:27Z",
+      "updated_at": "2023-11-30T23:45:27Z",
+      "categories": [],
+      "actors": [],
+      "families": []
     },
     {
-      "ioc_attributes": [],
-      "t_1": null,
-      "first_seen": "2018-03-27 21:25:03+02:00",
-      "created_at": "2018-03-27 21:44:50.181546+02:00",
-      "max_seq": 2592187078,
-      "max_confidence": 80,
-      "max_severity": 2,
-      "min_seq": 2592187078,
-      "gamma": 3.85e-06,
-      "updated_at": "2018-05-22 20:50:21.627182+02:00",
-      "families": [],
-      "source_pseudonyms": [
-        "4c77b81e"
-      ],
-      "observation_attributes": [],
-      "actors": [],
-      "data_type": "DomainName",
-      "enrich": false,
-      "hotness": 0.0,
-      "categories": [
-        "malware",
-        "phishing"
+      "data_type": "ExactHash",
+      "value": "sha256:8fc9a3ff1e5e4ab0d65e1504c40cc6c8c45b6cb6050b853c426ba739f65154c2",
+      "id": "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399",
+      "event_ids": [
+        "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
       "event_attributes": [
-        "category:malware"
+        "info:URLhaus IOCs for 2023-11-30",
+        "misp-uuid:d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
-      "value": "euvcdrsyfrpsa.co.uk",
-      "enriched_at": "2018-03-27 22:03:45.922996+02:00",
-      "a_1": null,
       "min_confidence": 80,
-      "enrichment_requested_at": null,
-      "n_occurrences": 1,
-      "entity_ids": [],
-      "comment": null,
-      "last_seen": "2018-05-22 20:23:03+02:00",
-      "event_ids": [
-        "b5709a16-0911-4617-9a08-10e6953f6270"
-      ],
+      "max_confidence": 80,
       "min_severity": 2,
-      "id": "4a085929-d95d-4117-a49f-671406cb6e09"
+      "max_severity": 2,
+      "source": [
+        "threatfox"
+      ],
+      "created_at": "2023-11-30T23:45:27Z",
+      "updated_at": "2023-11-30T23:45:27Z",
+      "categories": [],
+      "actors": [],
+      "families": []
     },
     {
-      "ioc_attributes": [],
-      "t_1": null,
-      "first_seen": "2018-03-27 21:25:03+02:00",
-      "created_at": "2018-03-27 21:44:43.149251+02:00",
-      "max_seq": 2592178080,
-      "max_confidence": 80,
-      "max_severity": 2,
-      "min_seq": 2592178080,
-      "gamma": 3.85e-06,
-      "updated_at": "2018-05-22 20:50:16.202061+02:00",
-      "families": [],
-      "source_pseudonyms": [
-        "4c77b81e"
-      ],
-      "observation_attributes": [],
-      "actors": [],
-      "data_type": "DomainName",
-      "enrich": false,
-      "hotness": 0.0,
-      "categories": [
-        "malware",
-        "phishing"
+      "data_type": "ExactHash",
+      "value": "md5:aee9499b3e64b93e5cbff2e147d997bb",
+      "id": "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399",
+      "event_ids": [
+        "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
       "event_attributes": [
-        "category:malware"
+        "info:URLhaus IOCs for 2023-11-30",
+        "misp-uuid:d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
-      "value": "mvbcsecbafsdt.co.uk",
-      "enriched_at": "2018-03-27 22:04:04.412128+02:00",
-      "a_1": null,
       "min_confidence": 80,
-      "enrichment_requested_at": null,
-      "n_occurrences": 1,
-      "entity_ids": [],
-      "comment": null,
-      "last_seen": "2018-05-22 20:23:03+02:00",
-      "event_ids": [
-        "b5709a16-0911-4617-9a08-10e6953f6270"
-      ],
+      "max_confidence": 80,
       "min_severity": 2,
-      "id": "48c97a44-cd6d-471a-9a47-fa6d47d0c445"
+      "max_severity": 2,
+      "source": [
+        "threatfox"
+      ],
+      "created_at": "2023-11-30T23:46:06Z",
+      "updated_at": "2023-11-30T23:46:06Z",
+      "categories": [],
+      "actors": [],
+      "families": []
     },
     {
-      "ioc_attributes": [],
-      "t_1": null,
-      "first_seen": "2018-03-27 21:25:03+02:00",
-      "created_at": "2018-03-27 21:44:43.149251+02:00",
-      "max_seq": 2592131999,
-      "max_confidence": 80,
-      "max_severity": 2,
-      "min_seq": 2592131999,
-      "gamma": 3.85e-06,
-      "updated_at": "2018-05-22 20:49:49.676691+02:00",
-      "families": [],
-      "source_pseudonyms": [
-        "4c77b81e"
-      ],
-      "observation_attributes": [],
-      "actors": [],
-      "data_type": "DomainName",
-      "enrich": false,
-      "hotness": 0.0,
-      "categories": [
-        "malware",
-        "phishing"
+      "data_type": "ExactHash",
+      "value": "sha256:8fc9a3ff1e5e4ab0d65e1504c40cc6c8c45b6cb6050b853c426ba739f65154c2",
+      "id": "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399",
+      "event_ids": [
+        "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
       "event_attributes": [
-        "category:malware"
+        "info:URLhaus IOCs for 2023-11-30",
+        "misp-uuid:d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
-      "value": "ndbpqvxuubapfo.co.uk",
-      "enriched_at": "2018-03-27 22:04:04.584981+02:00",
-      "a_1": null,
       "min_confidence": 80,
-      "enrichment_requested_at": null,
-      "n_occurrences": 1,
-      "entity_ids": [],
-      "comment": null,
-      "last_seen": "2018-05-22 20:23:03+02:00",
-      "event_ids": [
-        "b5709a16-0911-4617-9a08-10e6953f6270"
-      ],
+      "max_confidence": 80,
       "min_severity": 2,
-      "id": "c845ad8d-2149-48b2-84e4-d82773241fff"
+      "max_severity": 2,
+      "source": [
+        "threatfox"
+      ],
+      "created_at": "2023-11-30T23:46:06Z",
+      "updated_at": "2023-11-30T23:46:06Z",
+      "categories": [],
+      "actors": [],
+      "families": []
     },
     {
-      "ioc_attributes": [],
-      "t_1": null,
-      "first_seen": "2018-03-27 21:25:03+02:00",
-      "created_at": "2018-03-27 21:45:52.799059+02:00",
-      "max_seq": 2592164019,
-      "max_confidence": 80,
-      "max_severity": 2,
-      "min_seq": 2592164019,
-      "gamma": 3.85e-06,
-      "updated_at": "2018-05-22 20:50:08.537785+02:00",
-      "families": [],
-      "source_pseudonyms": [
-        "4c77b81e"
-      ],
-      "observation_attributes": [],
-      "actors": [],
-      "data_type": "DomainName",
-      "enrich": false,
-      "hotness": 0.0,
-      "categories": [
-        "malware",
-        "phishing"
+      "data_type": "ExactHash",
+      "value": "md5:aee9499b3e64b93e5cbff2e147d997bb",
+      "id": "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399",
+      "event_ids": [
+        "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
       "event_attributes": [
-        "category:malware"
+        "info:URLhaus IOCs for 2023-11-30",
+        "misp-uuid:d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
-      "value": "pvmpypmt.sx",
-      "enriched_at": "2018-03-27 22:03:42.818592+02:00",
-      "a_1": null,
       "min_confidence": 80,
-      "enrichment_requested_at": null,
-      "n_occurrences": 1,
-      "entity_ids": [],
-      "comment": null,
-      "last_seen": "2018-05-22 20:23:03+02:00",
-      "event_ids": [
-        "b5709a16-0911-4617-9a08-10e6953f6270"
-      ],
+      "max_confidence": 80,
       "min_severity": 2,
-      "id": "017ba5fc-2ca5-44e3-926d-87f36159a08b"
+      "max_severity": 2,
+      "source": [
+        "threatfox"
+      ],
+      "created_at": "2023-11-30T23:47:31Z",
+      "updated_at": "2023-11-30T23:47:31Z",
+      "categories": [],
+      "actors": [],
+      "families": []
     },
     {
-      "ioc_attributes": [],
-      "t_1": null,
-      "first_seen": "2018-03-27 21:25:03+02:00",
-      "created_at": "2018-03-27 21:44:47.086791+02:00",
-      "max_seq": 2592153266,
-      "max_confidence": 80,
-      "max_severity": 2,
-      "min_seq": 2592153266,
-      "gamma": 3.85e-06,
-      "updated_at": "2018-05-22 20:50:02.772992+02:00",
-      "families": [],
-      "source_pseudonyms": [
-        "4c77b81e"
-      ],
-      "observation_attributes": [],
-      "actors": [],
-      "data_type": "DomainName",
-      "enrich": false,
-      "hotness": 0.0,
-      "categories": [
-        "malware",
-        "phishing"
+      "data_type": "ExactHash",
+      "value": "sha256:8fc9a3ff1e5e4ab0d65e1504c40cc6c8c45b6cb6050b853c426ba739f65154c2",
+      "id": "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399",
+      "event_ids": [
+        "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
       "event_attributes": [
-        "category:malware"
+        "info:URLhaus IOCs for 2023-11-30",
+        "misp-uuid:d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
-      "value": "pyalejcw.sx",
-      "enriched_at": "2018-03-27 22:04:05.975661+02:00",
-      "a_1": null,
       "min_confidence": 80,
-      "enrichment_requested_at": null,
-      "n_occurrences": 1,
-      "entity_ids": [],
-      "comment": null,
-      "last_seen": "2018-05-22 20:23:03+02:00",
-      "event_ids": [
-        "b5709a16-0911-4617-9a08-10e6953f6270"
-      ],
+      "max_confidence": 80,
       "min_severity": 2,
-      "id": "25d36500-0eb7-4716-a60f-bd7413fcaa43"
+      "max_severity": 2,
+      "source": [
+        "threatfox"
+      ],
+      "created_at": "2023-11-30T23:47:31Z",
+      "updated_at": "2023-11-30T23:47:31Z",
+      "categories": [],
+      "actors": [],
+      "families": []
     },
     {
-      "ioc_attributes": [],
-      "t_1": null,
-      "first_seen": "2018-03-26 19:11:00+02:00",
-      "created_at": "2018-03-26 19:45:38.005650+02:00",
-      "max_seq": 2592182767,
-      "max_confidence": 90,
-      "max_severity": 2,
-      "min_seq": 2168585239,
-      "gamma": 3.85e-06,
-      "updated_at": "2018-05-22 20:50:19.506169+02:00",
-      "families": [
-        "locky"
-      ],
-      "source_pseudonyms": [
-        "4bff10d1",
-        "4c77b81e"
-      ],
-      "observation_attributes": [],
-      "actors": [],
-      "data_type": "DomainName",
-      "enrich": false,
-      "hotness": 0.0,
-      "categories": [
-        "c2-server",
-        "malware",
-        "phishing"
+      "data_type": "ExactHash",
+      "value": "md5:aee9499b3e64b93e5cbff2e147d997bb",
+      "id": "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399",
+      "event_ids": [
+        "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
       "event_attributes": [
-        "category:malware"
+        "info:URLhaus IOCs for 2023-11-30",
+        "misp-uuid:d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
-      "value": "qkalrmy.pw",
-      "enriched_at": "2018-03-26 20:13:36.940485+02:00",
-      "a_1": null,
       "min_confidence": 80,
-      "enrichment_requested_at": null,
-      "n_occurrences": 2,
-      "entity_ids": [],
-      "comment": null,
-      "last_seen": "2018-05-22 20:23:03+02:00",
-      "event_ids": [
-        "b5709a16-0911-4617-9a08-10e6953f6270",
-        "b6f40a43-acd8-4b95-b454-41cb192f0677"
+      "max_confidence": 80,
+      "min_severity": 2,
+      "max_severity": 2,
+      "source": [
+        "threatfox"
       ],
-      "min_severity": 1,
-      "id": "26298018-3285-4577-a15b-ed8224b33aa0"
+      "created_at": "2023-11-30T23:48:48Z",
+      "updated_at": "2023-11-30T23:48:48Z",
+      "categories": [],
+      "actors": [],
+      "families": []
     },
     {
-      "ioc_attributes": [],
-      "t_1": null,
-      "first_seen": "2018-03-27 21:25:03+02:00",
-      "created_at": "2018-03-27 21:45:47.738139+02:00",
-      "max_seq": 2592185082,
-      "max_confidence": 80,
-      "max_severity": 2,
-      "min_seq": 2592185082,
-      "gamma": 3.85e-06,
-      "updated_at": "2018-05-22 20:50:20.765549+02:00",
-      "families": [],
-      "source_pseudonyms": [
-        "4c77b81e"
-      ],
-      "observation_attributes": [],
-      "actors": [],
-      "data_type": "DomainName",
-      "enrich": false,
-      "hotness": 0.0,
-      "categories": [
-        "malware",
-        "phishing"
+      "data_type": "ExactHash",
+      "value": "sha256:8fc9a3ff1e5e4ab0d65e1504c40cc6c8c45b6cb6050b853c426ba739f65154c2",
+      "id": "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399",
+      "event_ids": [
+        "d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
       "event_attributes": [
-        "category:malware"
+        "info:-",
+        "misp-uuid:d4e6a1b0-2d5b-4f29-82a7-1e9259e0d399"
       ],
-      "value": "uvobooifhyahtjgukkeyp.kz",
-      "enriched_at": "2018-03-27 22:03:42.845266+02:00",
-      "a_1": null,
       "min_confidence": 80,
-      "enrichment_requested_at": null,
-      "n_occurrences": 1,
-      "entity_ids": [],
-      "comment": null,
-      "last_seen": "2018-05-22 20:23:03+02:00",
-      "event_ids": [
-        "b5709a16-0911-4617-9a08-10e6953f6270"
-      ],
+      "max_confidence": 80,
       "min_severity": 2,
-      "id": "cb802b50-0eb2-492a-a6d9-379895444108"
+      "max_severity": 2,
+      "source": [
+        "threatfox"
+      ],
+      "created_at": "2023-11-30T23:48:48Z",
+      "updated_at": "2023-11-30T23:48:48Z",
+      "categories": [],
+      "actors": [],
+      "families": []
     }
   ],
+  "has_more": true,
   "params": {
-    "severity": "1-",
-    "date_format": "default",
-    "seq": "-",
-    "confidence": "60-",
-    "match_all": "",
-    "last_seen_since": "2018-05-22T17:44:31Z",
     "no_defaults": false,
-    "limit": 10,
-    "exact": false,
     "filter": "default",
-    "category": "!parking,!sinkhole,!deleted,!potential-false-positive",
+    "data_type": "",
+    "severity": "1-",
+    "confidence": "60-",
     "offset": 0,
-    "order_by": "seq",
-    "enriched": false,
-    "direction": "asc"
+    "limit": 10,
+    "value": "",
+    "ivalue": "",
+    "order_by": "updated_at",
+    "direction": "asc",
+    "exact": true,
+    "category": "",
+    "source": "",
+    "updated_at_since": "2023-11-30T23:43:42Z"
   }
 }
