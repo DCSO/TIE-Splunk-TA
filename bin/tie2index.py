@@ -99,9 +99,15 @@ def fetch_iocs() -> NoReturn:
         os.path.dirname(__file__), "../local/timestamp.json"
     )
 
-    if fetcher.state["updated_at_since"] == 0:
+    if (
+        fetcher.state["updated_at_since"] == "0"
+        or fetcher.state["updated_at_since"] == 0
+    ):
         # check if we had a starting timestamp configured, and use that instead
-        if SETUP["tie"]["updated_at_since"] != 0:
+        if (
+            SETUP["tie"]["updated_at_since"] != "0"
+            and SETUP["tie"]["updated_at_since"] != 0
+        ):
             logger.info(
                 "restart fetching IoCs that were updated since {}".format(
                     SETUP["tie"]["updated_at_since"]
